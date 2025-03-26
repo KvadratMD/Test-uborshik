@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Рабочий профессиональной уборки</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-white: #ffffff;
+            --light-grey: #f5f7fa;
+            --medium-grey: #e9ecef;
+            --dark-grey: #6c757d;
+            --accent-blue: #007bff;
+            --accent-green: #28a745;
+            --accent-red: #dc3545;
+            --text-primary: #212529;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-grey);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 40px;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-grey);
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: var(--dark-grey);
+            margin-bottom: 10px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-grey);
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: var(--primary-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--medium-grey);
+            transition: var(--transition);
+        }
+        
+        .question-container:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .question {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .question::before {
+            content: attr(data-number);
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+        
+        .options {
+            display: grid;
+            grid-gap: 12px;
+        }
+        
+        .option {
+            position: relative;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            border-radius: var(--radius-sm);
+            background-color: var(--light-grey);
+            transition: var(--transition);
+        }
+        
+        .option:hover {
+            background-color: #e2e6ea;
+        }
+        
+        .option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .checkmark {
+            position: relative;
+            top: 2px;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 15px;
+            background-color: var(--primary-white);
+            border: 2px solid var(--dark-grey);
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        
+        .option:hover input ~ .checkmark {
+            border-color: var(--accent-blue);
+        }
+        
+        .option input:checked ~ .checkmark {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .option input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .option .checkmark:after {
+            left: 5px;
+            top: 1px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .option-text {
+            position: relative;
+            top: 0;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: var(--light-grey);
+            border-radius: 20px;
+            margin: 30px 0;
+            height: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 20px;
+            width: 0;
+            transition: width 0.6s ease;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+        
+        button:focus {
+            outline: none;
+        }
+        
+        .submit-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            box-shadow: var(--shadow-sm);
+            flex-grow: 1;
+            max-width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0069d9;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn {
+            background-color: var(--medium-grey);
+            color: var(--text-primary);
+            min-width: 120px;
+        }
+        
+        .nav-btn:hover {
+            background-color: #dae0e5;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-header h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .score-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-blue) 0% var(--score-percent), var(--medium-grey) var(--score-percent) 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .score-text {
+            position: relative;
+            z-index: 1;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .score-description {
+            font-size: 18px;
+            margin: 15px 0;
+            color: var(--dark-grey);
+            font-weight: 500;
+        }
+        
+        .all-questions {
+            margin-top: 50px;
+        }
+        
+        .all-questions h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .all-questions h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background-color: var(--medium-grey);
+        }
+        
+        .question-result {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: var(--radius-md);
+            background-color: var(--light-grey);
+            border-left: 4px solid;
+        }
+        
+        .question-result.correct {
+            border-left-color: var(--accent-green);
+        }
+        
+        .question-result.incorrect {
+            border-left-color: var(--accent-red);
+        }
+        
+        .question-result .question-text {
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .question-result .question-text::before {
+            content: attr(data-number);
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+        
+        .question-result .status {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .question-result.correct .status {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--accent-green);
+        }
+        
+        .question-result.incorrect .status {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--accent-red);
+        }
+        
+        .answers-container {
+            margin-top: 10px;
+        }
+        
+        .user-answer, .correct-answer {
+            margin-bottom: 5px;
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+        }
+        
+        .user-answer {
+            background-color: var(--medium-grey);
+            border-left: 3px solid var(--dark-grey);
+        }
+        
+        .user-answer.correct {
+            border-left-color: var(--accent-green);
+        }
+        
+        .user-answer.incorrect {
+            border-left-color: var(--accent-red);
+        }
+        
+        .correct-answer {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 3px solid var(--accent-green);
+        }
+        
+        .explanation {
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: var(--primary-white);
+            border-radius: var(--radius-sm);
+            color: var(--dark-grey);
+        }
+        
+        .restart-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 40px auto 0;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .restart-btn:hover {
+            background-color: #0069d9;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .section-divider {
+            margin: 40px 0;
+            height: 1px;
+            background-color: var(--medium-grey);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .question {
+                font-size: 15px;
+                padding-left: 25px;
+            }
+            
+            .option {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .score-circle::before {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .score-text {
+                font-size: 26px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                order: 1;
+            }
+            
+            .submit-btn {
+                order: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Тест: Рабочий профессиональной уборки</h1>
+            <p class="subtitle">Проверьте свои знания в области профессиональной уборки</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div id="quiz">
+            <div class="section-title">Раздел 1: Уборочный инвентарь</div>
+            
+            <div class="question-container">
+                <div class="question" data-number="1.">Какой материал щетины подходит для деликатных поверхностей?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Полипропилен</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Нейлон</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Конский волос</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Металл</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="2.">Какое свойство микрофибры делает ее эффективной при уборке без химических средств?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Высокая впитывающая способность</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Антибактериальное покрытие</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Электростатический эффект</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Жесткость волокон</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="3.">Какой инструмент лучше всего подходит для очистки труднодоступных мест?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Турбощетка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Угловая щетка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Полипропиленовая щетка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Вискозная салфетка</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="4.">Какой материал тряпки лучше всего подходит для полировки стеклянных поверхностей?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Хлопок</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Вискоза</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Микрофибра</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Шерсть</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="5.">Какой метод уборки помогает минимизировать перенос загрязнений при влажной уборке?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Метод "двух ведер"</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Метод "зигзагообразных движений"</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Метод "восьмерки"</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Метод "S-образных движений"</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            <div class="section-title">Раздел 2: Пылесосы</div>
+            
+            <div class="question-container">
+                <div class="question" data-number="6.">Какой элемент пылесоса отвечает за очистку воздуха от микрочастиц?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Электродвигатель</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) HEPA-фильтр</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Шланг</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Турбощетка</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="7.">Какой тип фильтра подходит для людей, страдающих аллергией?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Водяной фильтр</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) HEPA-фильтр</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Циклонный фильтр</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Металлический фильтр</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="8.">Что необходимо сделать перед разборкой пылесоса?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Проверить уровень заполненности мешка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Отключить от сети</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Снять насадки</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Все вышеперечисленное</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="9.">Как часто рекомендуется заменять HEPA-фильтр?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Раз в месяц</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Раз в 6-12 месяцев</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Раз в 3 года</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Только при механическом повреждении</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="10.">Какая насадка используется для очистки мягкой мебели от шерсти животных?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Турбощетка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Щелевая насадка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Насадка для твердых покрытий</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Насадка со скребком</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            <div class="section-title">Раздел 3: Обслуживание уборочного инвентаря</div>
+            
+            <div class="question-container">
+                <div class="question" data-number="11.">Какой метод очистки рекомендуется для резиновых сгонов?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q11" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Промывка теплой водой и спиртовая обработка</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Машинная стирка при высокой температуре</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Использование кислотных очистителей</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Вымачивание в хлорном растворе</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="12.">Как часто необходимо проводить дезинфекцию уборочного инвентаря?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q12" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Ежедневно</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Раз в неделю</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Только при видимых загрязнениях</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Раз в месяц</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="13.">Какой способ хранения инвентаря считается наиболее эффективным?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q13" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) В закрытых пластиковых контейнерах</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) В вертикальном положении на специальных держателях</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) В полиэтиленовых пакетах</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) В ящиках на полу</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="14.">Какой критерий является основным при замене изношенного уборочного инвентаря?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q14" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Изменение цвета материала</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Потеря функциональности</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Возраст инвентаря</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Наличие сертификата качества</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="15.">Какой материал уборочного инвентаря подвержен быстрой порче при воздействии влаги?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q15" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Полипропилен</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Нейлон</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Натуральное дерево</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Синтетический пластик</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+            <div class="section-title">Раздел 4: Пароочистители и поломоечные машины</div>
+            
+            <div class="question-container">
+                <div class="question" data-number="16.">Какой принцип действия лежит в основе работы пароочистителя?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q16" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Механическое воздействие вращающихся щеток</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Высокотемпературный пар под давлением</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Электростатическое притяжение загрязнений</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q16" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Ультразвуковая вибрация</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="17.">Какую температуру может достигать пар в пароочистителе?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q17" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) 60-80°C</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) 90-120°C</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) 140-180°C</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q17" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) 200-250°C</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="18.">Какой параметр регулирует степень воздействия пара на поверхность?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q18" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Скорость подачи воды</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Влажность пара</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Длина парового шланга</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q18" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Мощность двигателя</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="19.">Какой тип поломоечной машины обеспечивает автономную работу без участия оператора?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q19" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Сетевая модель</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Аккумуляторная модель</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Роботизированная модель</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q19" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Самоходная модель</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" data-number="20.">Что необходимо сделать с поломоечной машиной после завершения работы?</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q20" value="a">
+                        <span class="checkmark"></span>
+                        <span class="option-text">a) Слить грязную воду и очистить резервуары</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="b">
+                        <span class="checkmark"></span>
+                        <span class="option-text">b) Оставить моющий раствор в системе до следующего использования</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="c">
+                        <span class="checkmark"></span>
+                        <span class="option-text">c) Разобрать щетки и промыть под проточной водой</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q20" value="d">
+                        <span class="checkmark"></span>
+                        <span class="option-text">d) Варианты A и C</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="submit-btn" onclick="checkResults()">Завершить тест и проверить результаты</button>
+            </div>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="result-header">
+                <h2>Результаты теста</h2>
+                <p>Профессия: Рабочий профессиональной уборки</p>
+            </div>
+            
+            <div class="score-container">
+                <div class="score-circle" id="score-circle">
+                    <div class="score-text" id="score-text">0%</div>
+                </div>
+                <p class="score-description" id="score-description">Вы набрали 0 из 20 баллов (0%)</p>
+            </div>
+            
+            <div class="all-questions">
+                <h3>Детальные результаты</h3>
+                <div id="questions-results"></div>
+            </div>
+            
+            <button class="restart-btn" onclick="restartTest()">Пройти тест заново</button>
+        </div>
+    </div>
+    
+    <script>
+        // Правильные ответы
+        const correctAnswers = {
+            q1: "c", // Конский волос
+            q2: "c", // Электростатический эффект
+            q3: "b", // Угловая щетка
+            q4: "c", // Микрофибра
+            q5: "a", // Метод "двух ведер"
+            q6: "b", // HEPA-фильтр
+            q7: "b", // HEPA-фильтр
+            q8: "d", // Все вышеперечисленное
+            q9: "b", // Раз в 6-12 месяцев
+            q10: "a", // Турбощетка
+            q11: "a", // Промывка теплой водой и спиртовая обработка
+            q12: "a", // Ежедневно
+            q13: "b", // В вертикальном положении на специальных держателях
+            q14: "b", // Потеря функциональности
+            q15: "c", // Натуральное дерево
+            q16: "b", // Высокотемпературный пар под давлением
+            q17: "c", // 140-180°C
+            q18: "b", // Влажность пара
+            q19: "c", // Роботизированная модель
+            q20: "d"  // Варианты A и C
+        };
+        
+        // Тексты для вариантов ответов
+        const answerTexts = {
+            q1: {
+                a: "Полипропилен",
+                b: "Нейлон",
+                c: "Конский волос",
+                d: "Металл"
+            },
+            q2: {
+                a: "Высокая впитывающая способность",
+                b: "Антибактериальное покрытие",
+                c: "Электростатический эффект",
+                d: "Жесткость волокон"
+            },
+            q3: {
+                a: "Турбощетка",
+                b: "Угловая щетка",
+                c: "Полипропиленовая щетка",
+                d: "Вискозная салфетка"
+            },
+            q4: {
+                a: "Хлопок",
+                b: "Вискоза",
+                c: "Микрофибра",
+                d: "Шерсть"
+            },
+            q5: {
+                a: "Метод \"двух ведер\"",
+                b: "Метод \"зигзагообразных движений\"",
+                c: "Метод \"восьмерки\"",
+                d: "Метод \"S-образных движений\""
+            },
+            q6: {
+                a: "Электродвигатель",
+                b: "HEPA-фильтр",
+                c: "Шланг",
+                d: "Турбощетка"
+            },
+            q7: {
+                a: "Водяной фильтр",
+                b: "HEPA-фильтр",
+                c: "Циклонный фильтр",
+                d: "Металлический фильтр"
+            },
+            q8: {
+                a: "Проверить уровень заполненности мешка",
+                b: "Отключить от сети",
+                c: "Снять насадки",
+                d: "Все вышеперечисленное"
+            },
+            q9: {
+                a: "Раз в месяц",
+                b: "Раз в 6-12 месяцев",
+                c: "Раз в 3 года",
+                d: "Только при механическом повреждении"
+            },
+            q10: {
+                a: "Турбощетка",
+                b: "Щелевая насадка",
+                c: "Насадка для твердых покрытий",
+                d: "Насадка со скребком"
+            },
+            q11: {
+                a: "Промывка теплой водой и спиртовая обработка",
+                b: "Машинная стирка при высокой температуре",
+                c: "Использование кислотных очистителей",
+                d: "Вымачивание в хлорном растворе"
+            },
+            q12: {
+                a: "Ежедневно",
+                b: "Раз в неделю",
+                c: "Только при видимых загрязнениях",
+                d: "Раз в месяц"
+            },
+            q13: {
+                a: "В закрытых пластиковых контейнерах",
+                b: "В вертикальном положении на специальных держателях",
+                c: "В полиэтиленовых пакетах",
+                d: "В ящиках на полу"
+            },
+            q14: {
+                a: "Изменение цвета материала",
+                b: "Потеря функциональности",
+                c: "Возраст инвентаря",
+                d: "Наличие сертификата качества"
+            },
+            q15: {
+                a: "Полипропилен",
+                b: "Нейлон",
+                c: "Натуральное дерево",
+                d: "Синтетический пластик"
+            },
+            q16: {
+                a: "Механическое воздействие вращающихся щеток",
+                b: "Высокотемпературный пар под давлением",
+                c: "Электростатическое притяжение загрязнений",
+                d: "Ультразвуковая вибрация"
+            },
+            q17: {
+                a: "60-80°C",
+                b: "90-120°C",
+                c: "140-180°C",
+                d: "200-250°C"
+            },
+            q18: {
+                a: "Скорость подачи воды",
+                b: "Влажность пара",
+                c: "Длина парового шланга",
+                d: "Мощность двигателя"
+            },
+            q19: {
+                a: "Сетевая модель",
+                b: "Аккумуляторная модель",
+                c: "Роботизированная модель",
+                d: "Самоходная модель"
+            },
+            q20: {
+                a: "Слить грязную воду и очистить резервуары",
+                b: "Оставить моющий раствор в системе до следующего использования",
+                c: "Разобрать щетки и промыть под проточной водой",
+                d: "Варианты A и C"
+            }
+        };
+        
+        // Тексты вопросов
+        const questionTexts = {
+            q1: "Какой материал щетины подходит для деликатных поверхностей?",
+            q2: "Какое свойство микрофибры делает ее эффективной при уборке без химических средств?",
+            q3: "Какой инструмент лучше всего подходит для очистки труднодоступных мест?",
+            q4: "Какой материал тряпки лучше всего подходит для полировки стеклянных поверхностей?",
+            q5: "Какой метод уборки помогает минимизировать перенос загрязнений при влажной уборке?",
+            q6: "Какой элемент пылесоса отвечает за очистку воздуха от микрочастиц?",
+            q7: "Какой тип фильтра подходит для людей, страдающих аллергией?",
+            q8: "Что необходимо сделать перед разборкой пылесоса?",
+            q9: "Как часто рекомендуется заменять HEPA-фильтр?",
+            q10: "Какая насадка используется для очистки мягкой мебели от шерсти животных?",
+            q11: "Какой метод очистки рекомендуется для резиновых сгонов?",
+            q12: "Как часто необходимо проводить дезинфекцию уборочного инвентаря?",
+            q13: "Какой способ хранения инвентаря считается наиболее эффективным?",
+            q14: "Какой критерий является основным при замене изношенного уборочного инвентаря?",
+            q15: "Какой материал уборочного инвентаря подвержен быстрой порче при воздействии влаги?",
+            q16: "Какой принцип действия лежит в основе работы пароочистителя?",
+            q17: "Какую температуру может достигать пар в пароочистителе?",
+            q18: "Какой параметр регулирует степень воздействия пара на поверхность?",
+            q19: "Какой тип поломоечной машины обеспечивает автономную работу без участия оператора?",
+            q20: "Что необходимо сделать с поломоечной машиной после завершения работы?"
+        };
+        
+        // Объяснения для каждого вопроса
+        const explanations = {
+            q1: "Конский волос является наиболее мягким материалом для щетины, который идеально подходит для очистки деликатных поверхностей (паркет, мрамор, антикварная мебель), так как не оставляет царапин и обеспечивает бережное воздействие.",
+            q2: "Благодаря особой структуре волокон микрофибры, она создает электростатический эффект, притягивая пыль и мелкие частицы загрязнений без использования химических средств, что делает ее экологичным и эффективным материалом для сухой уборки.",
+            q3: "Угловая щетка имеет специальную форму, позволяющую проникать в труднодоступные места (углы, стыки, щели), недоступные для обычных плоских щеток или других инструментов.",
+            q4: "Микрофибра идеально подходит для полировки стеклянных поверхностей, так как не оставляет разводов и ворсинок, эффективно удаляет жировые пятна и отпечатки пальцев благодаря тонкой структуре волокон.",
+            q5: "Метод \"двух ведер\" предполагает использование одного ведра с чистым моющим раствором, а второго - для полоскания грязной тряпки/мопа, что предотвращает перенос загрязнений с одной поверхности на другую.",
+            q6: "HEPA-фильтр (High Efficiency Particulate Air) задерживает до 99,97% микрочастиц размером до 0,3 микрона, включая пыль, пыльцу, споры плесени и бактерии, тем самым обеспечивая очистку выходящего из пылесоса воздуха.",
+            q7: "HEPA-фильтр рекомендуется для людей с аллергией, так как он способен удерживать мельчайшие аллергены, такие как пыльца, частицы пылевых клещей и шерсть животных, которые обычно являются триггерами аллергических реакций.",
+            q8: "Перед разборкой пылесоса необходимо выполнить все перечисленные действия: отключить от сети (безопасность), проверить заполненность мешка/контейнера (предотвращение высыпания пыли) и снять насадки (для полной разборки).",
+            q9: "HEPA-фильтры в бытовых пылесосах рекомендуется заменять каждые 6-12 месяцев для сохранения эффективности фильтрации. При интенсивном использовании или в условиях сильной запыленности замена может требоваться чаще.",
+            q10: "Турбощетка (щетка с вращающимся валиком) наиболее эффективна для удаления шерсти животных с мягкой мебели, так как она создает эффект «вычесывания», извлекая шерсть из волокон ткани благодаря вращательному движению.",
+            q11: "Для резиновых сгонов рекомендуется промывка теплой водой и последующая обработка спиртом, так как это удаляет загрязнения, не повреждая резину, и обеспечивает дезинфекцию, при этом спирт быстро испаряется, не оставляя разводов.",
+            q12: "Дезинфекцию уборочного инвентаря необходимо проводить ежедневно после завершения работ, что предотвращает размножение микроорганизмов и перекрестное загрязнение при последующей уборке.",
+            q13: "Хранение инвентаря в вертикальном положении на специальных держателях наиболее эффективно, так как обеспечивает быстрое высыхание, предотвращает деформацию (особенно щеток и швабр) и минимизирует контакт с полом, где могут быть загрязнения.",
+            q14: "Основной критерий для замены уборочного инвентаря — потеря функциональности, когда инвентарь уже не выполняет свою задачу эффективно (например, истертые щетки, порванные салфетки, деформированные сгоны и т.д.).",
+            q15: "Натуральное дерево быстрее всего портится при воздействии влаги, так как оно впитывает воду, что приводит к набуханию, деформации, образованию трещин и развитию грибка или плесени.",
+            q16: "Пароочиститель работает на принципе высокотемпературного пара под давлением, который проникает в поры и микротрещины поверхностей, размягчает и растворяет загрязнения, а также обеспечивает дезинфекцию благодаря высокой температуре.",
+            q17: "В профессиональных пароочистителях температура пара может достигать 140-180°C, что обеспечивает не только эффективную очистку, но и дезинфекцию поверхностей без применения химических средств.",
+            q18: "Влажность пара является ключевым параметром, регулирующим степень воздействия на поверхность: сухой пар (с низким содержанием влаги) подходит для деликатных поверхностей, влажный — для сильных загрязнений.",
+            q19: "Роботизированная модель поломоечной машины оснащена датчиками и программным обеспечением, позволяющими ей автономно перемещаться, обнаруживать и обходить препятствия, а также самостоятельно выполнять весь цикл уборки без участия оператора.",
+            q20: "После завершения работы с поломоечной машиной необходимо: слить грязную воду и очистить резервуары, а также разобрать щетки и промыть их под проточной водой (варианты A и C). Это предотвращает размножение бактерий, неприятный запах и продлевает срок службы машины."
+        };
+
+        // Функция для обновления прогресс-бара
+        function updateProgress() {
+            const totalQuestions = 20;
+            let answered = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = `q${i}`;
+                const selectedAnswer = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (selectedAnswer) {
+                    answered++;
+                }
+            }
+            
+            const progressPercent = (answered / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        }
+        
+        // Добавляем обработчик событий для всех радиокнопок
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', updateProgress);
+        });
+        
+        // Функция проверки результатов
+        function checkResults() {
+            let score = 0;
+            const results = [];
+            
+            // Проверяем каждый вопрос
+            for (let i = 1; i <= 20; i++) {
+                const questionName = `q${i}`;
+                const selectedAnswer = document.querySelector(`input[name="${questionName}"]:checked`);
+                let userAnswer = null;
+                let isCorrect = false;
+                
+                if (selectedAnswer) {
+                    userAnswer = selectedAnswer.value;
+                    isCorrect = (userAnswer === correctAnswers[questionName]);
+                    if (isCorrect) {
+                        score++;
+                    }
+                }
+                
+                results.push({
+                    question: questionName,
+                    questionText: questionTexts[questionName],
+                    userAnswer: userAnswer,
+                    correctAnswer: correctAnswers[questionName],
+                    isCorrect: isCorrect
+                });
+            }
+            
+            // Вычисляем процент выполнения
+            const scorePercent = (score / 20) * 100;
+            
+            // Обновляем графический индикатор
+            const scoreCircle = document.getElementById('score-circle');
+            scoreCircle.style.setProperty('--score-percent', `${scorePercent}%`);
+            
+            // Отображаем результаты
+            document.getElementById('score-text').textContent = `${scorePercent}%`;
+            document.getElementById('score-description').textContent = `Вы набрали ${score} из 20 баллов (${scorePercent}%)`;
+            
+            // Отображаем результаты по каждому вопросу
+            const questionsResultsContainer = document.getElementById('questions-results');
+            questionsResultsContainer.innerHTML = '';
+            
+            results.forEach((result, index) => {
+                const questionResult = document.createElement('div');
+                questionResult.className = `question-result ${result.isCorrect ? 'correct' : 'incorrect'}`;
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.setAttribute('data-number', `${index + 1}.`);
+                questionText.textContent = result.questionText;
+                
+                const status = document.createElement('div');
+                status.className = 'status';
+                status.textContent = result.isCorrect ? 'Верно' : 'Неверно';
+                
+                const answersContainer = document.createElement('div');
+                answersContainer.className = 'answers-container';
+                
+                const userAnswerElement = document.createElement('div');
+                userAnswerElement.className = `user-answer ${result.isCorrect ? 'correct' : 'incorrect'}`;
+                
+                if (result.userAnswer) {
+                    userAnswerElement.textContent = `Ваш ответ: ${answerTexts[result.question][result.userAnswer]}`;
+                } else {
+                    userAnswerElement.textContent = 'Вы не ответили на этот вопрос';
+                }
+                
+                answersContainer.appendChild(userAnswerElement);
+                
+                if (!result.isCorrect) {
+                    const correctAnswerElement = document.createElement('div');
+                    correctAnswerElement.className = 'correct-answer';
+                    correctAnswerElement.textContent = `Правильный ответ: ${answerTexts[result.question][result.correctAnswer]}`;
+                    answersContainer.appendChild(correctAnswerElement);
+                }
+                
+                const explanation = document.createElement('div');
+                explanation.className = 'explanation';
+                explanation.textContent = explanations[result.question];
+                
+                questionResult.appendChild(questionText);
+                questionResult.appendChild(status);
+                questionResult.appendChild(answersContainer);
+                questionResult.appendChild(explanation);
+                
+                questionsResultsContainer.appendChild(questionResult);
+            });
+            
+            // Показываем результаты, скрываем тест
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            
+            // Плавная прокрутка вверх
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Функция перезапуска теста
+        function restartTest() {
+            // Сбрасываем все выбранные ответы
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // Сбрасываем прогресс-бар
+            document.getElementById('progress-bar').style.width = '0%';
+            
+            // Показываем тест, скрываем результаты
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            
+            // Прокрутка страницы вверх
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
